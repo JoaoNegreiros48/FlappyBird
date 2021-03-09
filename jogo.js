@@ -88,13 +88,70 @@ const planoDeFundo = {
     }
 }
 
+const menssagemGetReady = {
+    sX: 134,
+    sY: 0,
+    w: 174,
+    h: 152,
+    x: (canvas.width / 2) - 174 / 2,
+    y: 50,
+    desenhar(){ // f(x) que desenha ele mesmo
+        contexto.drawImage(
+            sprites, // Local onde está a imagem de referencia
+            menssagemGetReady.sX, menssagemGetReady.sY, 
+            menssagemGetReady.w, menssagemGetReady.h, 
+            menssagemGetReady.x, menssagemGetReady.y,
+            menssagemGetReady.w, menssagemGetReady.h
+        )
+    }
+}
+
+// Telas contem as funções que cada tela ira usar
+let telaAtiva = {}
+function mudarTela(novaTela){
+    telaAtiva = novaTela
+}
+
+const telas = {
+    inicio: {
+        desenha(){
+            planoDeFundo.desenhar()
+            chao.desenhar()
+            flappyBird.desenhar()
+            menssagemGetReady.desenhar()
+        },
+        atualiza(){
+
+        },
+        click(){
+            mudarTela(telas.jogo)
+        }
+    },
+    jogo: {
+        desenha(){
+            planoDeFundo.desenhar()
+            chao.desenhar()
+            flappyBird.desenhar()
+        },
+        atualiza(){
+            flappyBird.atualiza()
+        }
+    }
+}
+
 // --------------------------------Desenhar------------------------------------------
 function loop(){
-    flappyBird.atualiza()
-    planoDeFundo.desenhar()
-    chao.desenhar()
-    flappyBird.desenhar()
+    telaAtiva.desenha()
+    telaAtiva.atualiza()
 
     requestAnimationFrame(loop) // Função para criar um loop que forma os FPS na tela
 }
+
+window.addEventListener('click', function(){
+    if(telaAtiva.click) {
+        telaAtiva.click()
+    }
+})
+
+mudarTela(telas.inicio)
 loop()
