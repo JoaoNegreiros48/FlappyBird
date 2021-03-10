@@ -6,6 +6,12 @@ let frame = 0
 
 const somHit = new Audio()
 somHit.src = './efeitos/efeitos_hit.wav'
+const somPonto = new Audio()
+somPonto.src = './efeitos/efeitos_ponto.wav'
+const somPulo = new Audio()
+somPulo.src = './efeitos/efeitos_pulo.wav'
+const somCaiu = new Audio()
+somCaiu.src = './efeitos/efeitos_caiu.wav'
 
 const canvas = document.querySelector('canvas')
 const contexto = canvas.getContext('2d')
@@ -36,8 +42,8 @@ function criaFlappyBird(){
         y: 50,
         pulo: 4.6,
         pula(){
-            console.log('pulos')
             flappyBird.velocidade = - flappyBird.pulo
+            somPulo.play()
         },
         gravidade: 0.25,
         velocidade: 0,
@@ -45,7 +51,7 @@ function criaFlappyBird(){
             if(fazColisao(flappyBird, globais.chao)){
                 somHit.play()
                 setTimeout(() => {
-                    mudarTela(telas.inicio)
+                    mudarTela(telas.gameOver)
                 }, 400)
     
                 return
@@ -53,6 +59,7 @@ function criaFlappyBird(){
     
             flappyBird.velocidade += flappyBird.gravidade
             flappyBird.y += flappyBird.velocidade
+            somCaiu.play()
         },
         movimentos: [
             { spriteX: 0, spriteY: 0, }, // asa pra cima
@@ -204,7 +211,8 @@ function criaCanos(){
                 par.x = par.x - 2
 
                 if(canos.colisao(par)){
-                    mudarTela(telas.inicio)
+                    somHit.play()
+                    mudarTela(telas.gameOver)
                 }
 
                 // remove canos que já passaram para não enxer a memoria do user
@@ -215,6 +223,31 @@ function criaCanos(){
         }
     }
     return canos
+}
+
+function criaPlacar(){
+    const placar = {
+        pontuacao: 1,
+        desenhar() {
+            contexto.font = '35px "VT323"';
+            contexto.textAlign = 'right';
+            contexto.fillStyle = 'white';
+            contexto.fillText(`${placar.pontuacao}`, canvas.width - 10, 35);      
+        },
+        atualiza(){
+            const intervaloFrames = 50
+            const passouIntervalo = frame % intervaloFrames === 0
+
+            if (passouIntervalo){
+                if(placar.pontuacao % 50 === 0){
+                    somPonto.play()
+                }
+                placar.pontuacao++
+                console.log(placar.pontuacao)
+            }
+        }
+    }
+    return placar
 }
 
 // --------------------------------- Objetos estaticos -----------------------------
@@ -267,6 +300,23 @@ const menssagemGetReady = {
         )
     }
 }
+const mensagemGameOver = {
+    sX: 134,
+    sY: 153,
+    w: 226,
+    h: 200,
+    x: (canvas.width / 2) - 226 / 2,
+    y: 50,
+    desenha() {
+      contexto.drawImage(
+        sprites,
+        mensagemGameOver.sX, mensagemGameOver.sY,
+        mensagemGameOver.w, mensagemGameOver.h,
+        mensagemGameOver.x, mensagemGameOver.y,
+        mensagemGameOver.w, mensagemGameOver.h
+      );
+    }
+  }
 
 // --------------------------------- Telas -----------------------------
 
@@ -274,7 +324,7 @@ function mudarTela(novaTela){
     telaAtiva = novaTela
 
     if(telaAtiva.inicializa){
-        telas.inicio.inicializa()
+        telaAtiva.inicializa()
     }
 }
 
@@ -294,19 +344,21 @@ const telas = {
         },
         atualiza(){
             globais.chao.atualiza()
-            
         },
         click(){
             mudarTela(telas.jogo)
         }
     },
     jogo: {
+        inicializa(){
+            globais.placar = criaPlacar()
+        },
         desenha(){
             planoDeFundo.desenhar()
-            
             globais.canos.desenhar()
             globais.chao.desenhar()
             globais.flappyBird.desenhar()
+            globais.placar.desenhar()
         },
         click(){
             globais.flappyBird.pula()
@@ -315,6 +367,21 @@ const telas = {
             globais.flappyBird.atualiza()
             globais.chao.atualiza()
             globais.canos.atualiza()
+            globais.placar.atualiza()
+        }
+    },
+    gameOver: {
+        inicializa(){
+
+        },
+        desenha(){
+            mensagemGameOver.desenha()
+        },
+        click(){
+            mudarTela(telas.inicio)
+        },
+        atualiza(){
+
         }
     }
 }
