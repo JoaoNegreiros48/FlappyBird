@@ -4,6 +4,14 @@ sprites.src = './sprites.png'
 
 let frame = 0
 
+const canvas = document.querySelector('canvas')
+const contexto = canvas.getContext('2d')
+
+const globais = {}
+
+let telaAtiva = {}
+
+// -------------------------------SONS----------------------------------
 const somHit = new Audio()
 somHit.src = './efeitos/efeitos_hit.wav'
 const somPonto = new Audio()
@@ -13,12 +21,6 @@ somPulo.src = './efeitos/efeitos_pulo.wav'
 const somCaiu = new Audio()
 somCaiu.src = './efeitos/efeitos_caiu.wav'
 
-const canvas = document.querySelector('canvas')
-const contexto = canvas.getContext('2d')
-
-const globais = {} // objeto que preenche tudo que for global
-// Telas contem as funções que cada tela ira usar
-let telaAtiva = {}
 
 // --------------------------------- Funções -----------------------------
 
@@ -300,6 +302,7 @@ const menssagemGetReady = {
         )
     }
 }
+
 const mensagemGameOver = {
     sX: 134,
     sY: 153,
