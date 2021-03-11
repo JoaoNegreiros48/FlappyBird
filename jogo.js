@@ -18,9 +18,6 @@ const somPonto = new Audio()
 somPonto.src = './efeitos/efeitos_ponto.wav'
 const somPulo = new Audio()
 somPulo.src = './efeitos/efeitos_pulo.wav'
-const somCaiu = new Audio()
-somCaiu.src = './efeitos/efeitos_caiu.wav'
-
 
 // --------------------------------- Funções -----------------------------
 
@@ -42,7 +39,7 @@ function criaFlappyBird(){
         altura: 24,
         x: 10, // Dx e Dy (Draw x e y) - coordenadas a serem usadas no canvas
         y: 50,
-        pulo: 4.6,
+        pulo: 4,
         pula(){
             flappyBird.velocidade = - flappyBird.pulo
             somPulo.play()
@@ -61,7 +58,6 @@ function criaFlappyBird(){
     
             flappyBird.velocidade += flappyBird.gravidade
             flappyBird.y += flappyBird.velocidade
-            somCaiu.play()
         },
         movimentos: [
             { spriteX: 0, spriteY: 0, }, // asa pra cima
@@ -149,7 +145,7 @@ function criaCanos(){
         desenhar() {
             canos.pares.forEach(function(par) {
               const yRandom = par.y;
-              const espacamentoEntreCanos = 90;
+              const espacamentoEntreCanos = 100;
         
               const canoCeuX = par.x;
               const canoCeuY = yRandom; 
@@ -285,7 +281,8 @@ const planoDeFundo = {
     }
 }
 
-const menssagemGetReady = {
+const menssagemGetReady = 
+{
     sX: 134,
     sY: 0,
     w: 174,
