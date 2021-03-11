@@ -39,12 +39,12 @@ function criaFlappyBird(){
         altura: 24,
         x: 10, // Dx e Dy (Draw x e y) - coordenadas a serem usadas no canvas
         y: 50,
-        pulo: 4,
+        pulo: 2.75,
         pula(){
             flappyBird.velocidade = - flappyBird.pulo
             somPulo.play()
         },
-        gravidade: 0.25,
+        gravidade: 0.15,
         velocidade: 0,
         atualiza(){
             if(fazColisao(flappyBird, globais.chao)){
