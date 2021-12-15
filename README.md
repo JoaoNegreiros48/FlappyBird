@@ -10,5 +10,3 @@ Playlist do YouTube -  https://www.youtube.com/watch?v=jOAU81jdi-c&list=PLTcmLKd
 
 Link do jogo  - https://flappy-bird-gilt.vercel.app/ 
 
-Instagram: [João Negreiros (@joao_negreiros.vt)](https://www.instagram.com/joao_negreiros.vt/)
-Linkedln: [João Negreiros | LinkedIn](https://www.linkedin.com/in/jo%C3%A3o-negreiros-50733b189/)
